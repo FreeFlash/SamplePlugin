@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        applicationId "com.tianxiaolei.sampleplugin"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+buildscript {
+    repositories {
+        maven {//本地Maven仓库地址
+            url uri('/Users/tianxiaolei/Documents/mavendir')
+        }
+    }
+    dependencies {
+        //格式为-->group:module:version
+        classpath 'com.tianxiaolei.plugin:plugin_hello:1.0.0'
+        classpath 'com.tianxiaolei.plugin:plugin_rnapk:1.0.0'
+    }
+}
+//com.hc.gradle为resources/META-INF/gradle-plugins
+//下的properties文件名称
+apply plugin: 'com.tianxiaolei.plugin.hello'
+apply plugin: 'com.tianxiaolei.plugin.change'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+class GreetingPluginExtension{
+    String message = "Hello from GreetingPlugin"
+}
+
+
+class GreetingPlugin implements Plugin<Project>{
+
+    @Override
+    void apply(Project project){
+
+        def extension  = project.extensions.create('greeting',GreetingPluginExtension)
+
+        project.task('hello'){
+            doLast {
+                println extension.message
+            }
+        }
+    }
+}
+
+apply plugin:GreetingPlugin
+
+greeting{
+    message="I am dynamic message"
+}

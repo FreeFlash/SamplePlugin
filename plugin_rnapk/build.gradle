@@ -1,0 +1,25 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation gradleApi()
+    //    groovy SDK
+    implementation localGroovy()
+}
+
+//publish to local directory
+def versionName = "1.0.0"
+group "com.tianxiaolei.plugin"
+version versionName
+
+uploadArchives{ //当前项目可以发布到本地文件夹中
+    repositories {
+        mavenDeployer {
+            repository(url: uri('/Users/tianxiaolei/Documents/mavendir')) //定义本地maven仓库的地址
+        }
+    }
+}
