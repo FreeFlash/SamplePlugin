@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SamplePlugin</string>
+    <string name="jumptokotlin">JumpToKotlin</string>
 </resources>
