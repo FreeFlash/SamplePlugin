@@ -33,12 +33,14 @@ buildscript {
         //格式为-->group:module:version
         classpath 'com.tianxiaolei.plugin:plugin_hello:1.0.0'
         classpath 'com.tianxiaolei.plugin:plugin_rnapk:1.0.0'
+        classpath 'com.tianxiaolei.plugin:plugin_lifecycle:1.0.0'
     }
 }
 //com.hc.gradle为resources/META-INF/gradle-plugins
 //下的properties文件名称
 apply plugin: 'com.tianxiaolei.plugin.hello'
 apply plugin: 'com.tianxiaolei.plugin.change'
+apply plugin: 'com.tianxiaolei.plugin.lifecycle'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -46,24 +48,25 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
-class GreetingPluginExtension{
+class GreetingPluginExtension {
     String message = "Hello from GreetingPlugin"
 }
 
 
-class GreetingPlugin implements Plugin<Project>{
+class GreetingPlugin implements Plugin<Project> {
 
     @Override
-    void apply(Project project){
+    void apply(Project project) {
 
-        def extension  = project.extensions.create('greeting',GreetingPluginExtension)
+        def extension = project.extensions.create('greeting', GreetingPluginExtension)
 
-        project.task('hello'){
+        project.task('hello') {
             doLast {
                 println extension.message
             }
@@ -71,8 +74,8 @@ class GreetingPlugin implements Plugin<Project>{
     }
 }
 
-apply plugin:GreetingPlugin
+apply plugin: GreetingPlugin
 
-greeting{
-    message="I am dynamic message"
+greeting {
+    message = "I am dynamic message"
 }
